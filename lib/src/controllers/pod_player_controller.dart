@@ -19,11 +19,13 @@ class PodPlayerController {
 
   final PlayVideoFrom playVideoFrom;
   final PodPlayerConfig podPlayerConfig;
+  Widget? watermark;
 
   /// controller for pod player
   PodPlayerController({
     required this.playVideoFrom,
     this.podPlayerConfig = const PodPlayerConfig(),
+    this.watermark,
   }) {
     _init();
   }
@@ -31,10 +33,14 @@ class PodPlayerController {
   void _init() {
     getTag = UniqueKey().toString();
     Get.config(enableLog: PodVideoPlayer.enableGetxLogs);
-    _ctr = Get.put(PodGetXVideoController(), permanent: true, tag: getTag)
-      ..config(
+    _ctr = Get.put(
+      PodGetXVideoController(),
+      permanent: true,
+      tag: getTag,
+    )..config(
         playVideoFrom: playVideoFrom,
         playerConfig: podPlayerConfig,
+        watermark: watermark,
       );
   }
 
