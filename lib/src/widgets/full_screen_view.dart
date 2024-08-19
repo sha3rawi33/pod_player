@@ -2,6 +2,7 @@ part of 'package:pod_player/src/pod_player.dart';
 
 class FullScreenView extends StatefulWidget {
   final String tag;
+
   const FullScreenView({
     required this.tag,
     super.key,
@@ -14,6 +15,7 @@ class FullScreenView extends StatefulWidget {
 class _FullScreenViewState extends State<FullScreenView>
     with TickerProviderStateMixin {
   late PodGetXVideoController _podCtr;
+
   @override
   void initState() {
     _podCtr = Get.find<PodGetXVideoController>(tag: widget.tag);
@@ -65,11 +67,18 @@ class _FullScreenViewState extends State<FullScreenView>
                   child: podCtr.videoCtr == null
                       ? loadingWidget
                       : podCtr.videoCtr!.value.isInitialized
-                          ? _PodCoreVideoPlayer(
-                              tag: widget.tag,
-                              videoPlayerCtr: podCtr.videoCtr!,
-                              videoAspectRatio:
-                                  podCtr.videoCtr?.value.aspectRatio ?? 16 / 9,
+                          ? Stack(
+                              children: [
+                                _PodCoreVideoPlayer(
+                                  tag: widget.tag,
+                                  videoPlayerCtr: podCtr.videoCtr!,
+                                  videoAspectRatio:
+                                      podCtr.videoCtr?.value.aspectRatio ??
+                                          16 / 9,
+                                ),
+                                if (_podCtr.watermark != null)
+                                  _podCtr.watermark!,
+                              ],
                             )
                           : loadingWidget,
                 ),
